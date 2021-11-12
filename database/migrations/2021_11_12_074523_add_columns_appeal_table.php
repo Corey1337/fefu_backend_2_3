@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Enums\Gender;
 
-class CreateNewAppealsTable extends Migration
+class AddColumnsAppealTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,17 +14,11 @@ class CreateNewAppealsTable extends Migration
      */
     public function up()
     {
-        Schema::create('appeals', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 20);
+        Schema::table('appeals', function(Blueprint $table) {
             $table->string('surname', 40);
             $table->string('patronymic', 20)->nullable();
             $table->integer('age');
             $table->enum('gender', [Gender::MALE, Gender::FEMALE]);
-            $table->string('phone', 11)->nullable();
-            $table->string('email', 100)->nullable();
-            $table->string('message', 100);
-            $table->timestamps();
         });
     }
 
@@ -35,6 +29,11 @@ class CreateNewAppealsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('appeals');
+        Schema::table('appeals', function(Blueprint $table) {
+            $table->dropColumn('surname');
+            $table->dropColumn('patronymic');
+            $table->dropColumn('age');
+            $table->dropColumn('gender');
+        });
     }
 }
