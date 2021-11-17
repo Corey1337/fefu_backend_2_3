@@ -49,11 +49,8 @@ class ChangeNewsSlug extends Command
         if ($old_slug === $new_slug)
         {
             $err ='$old_slug and $new_slug must be different.';
-            $this->newLine(1);
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->error('  ' . $err . '  ');
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->newLine(1);
+            
+            $this->error_message($err);
             return 1;
         }
 
@@ -65,11 +62,8 @@ class ChangeNewsSlug extends Command
         if($same_redir !== null) 
         {
             $err ='this redirect already exist.';
-            $this->newLine(1);
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->error('  ' . $err . '  ');
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->newLine(1);
+
+            $this->error_message($err);
             return 1;
         }
 
@@ -77,11 +71,8 @@ class ChangeNewsSlug extends Command
         if ($news === null)
         {
             $err ='news was not found by $old_slug.';
-            $this->newLine(1);
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->error('  ' . $err . '  ');
-            $this->error(str_repeat(' ', strlen($err) + 4));
-            $this->newLine(1);
+
+            $this->error_message($err);
             return 1;
         }
 
@@ -94,4 +85,14 @@ class ChangeNewsSlug extends Command
 
         return Command::SUCCESS;
     }
+
+    private function error_message($error)
+    {
+        $this->newLine(1);
+        $this->error(str_repeat(' ', strlen($error) + 4));
+        $this->error('  ' . $error . '  ');
+        $this->error(str_repeat(' ', strlen($error) + 4));
+        $this->newLine(1);
+    }
+    
 }
