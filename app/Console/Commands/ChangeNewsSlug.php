@@ -49,15 +49,14 @@ class ChangeNewsSlug extends Command
         if ($old_slug === $new_slug)
         {
             $err ='$old_slug and $new_slug must be different.';
-            
+
             $this->error_message($err);
             return 1;
         }
 
-        $same_redir = Redirect::query()->where('old_slug', route('news_item', ['slug' => $old_slug]))
-        ->where('new_slug', route('news_item', ['slug' => $new_slug])) 
+        $same_redir = Redirect::query()->where('old_slug', route('news_item', ['slug' => $old_slug], false))
+        ->where('new_slug', route('news_item', ['slug' => $new_slug], false)) 
         ->first();
-        
 
         if($same_redir !== null) 
         {
@@ -78,7 +77,7 @@ class ChangeNewsSlug extends Command
 
         DB::transaction(function() use ($news, $new_slug) 
         {
-            Redirect::query()->where('old_slug', $new_slug)->delete();
+            Redirect::query()->where('old_slug', route('news_item', ['slug' => $new_slug], false))->delete();
             $news->slug = $new_slug;
             $news->save();
         });

@@ -17,13 +17,8 @@ class RedirectFromOldSlug
      */
     public function handle(Request $request, Closure $next)
     {
-        $url = substr(parse_url($request->url(), PHP_URL_PATH), 6);
+        $url = parse_url($request->url(), PHP_URL_PATH);
         $redirect = Redirect::query()->where('old_slug', $url)->orderByDesc('created_at')->orderByDesc('id')->first();
-        // if($redirect === null)
-        // {
-        //     print("\nnull");
-        // }
-        //print($redirect);
         $redirTo = null;
 
         while($redirect !== null)
@@ -38,7 +33,7 @@ class RedirectFromOldSlug
         }
         if ($redirTo !== null)
         {
-            return redirect('news/' . $redirTo);
+            return redirect($redirTo);
         }
         
         return $next($request);
