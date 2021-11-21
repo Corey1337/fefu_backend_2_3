@@ -17,8 +17,12 @@ class AppealController extends Controller
      */
     public function __invoke(Request $request)
     {
-
+        $grat_message = $request->session()->get('grat_message');
+            if ($grat_message)
+                $request->session()->put('grat_message', false);
         if($request->isMethod('POST')) {
+
+            
 
             $validate = $request->validate(AppealPostRequest::rules());
 
@@ -32,11 +36,13 @@ class AppealController extends Controller
             $appeal->email = $validate['email'];
             $appeal->message = $validate['message'];
             $appeal->save();
+            $request->session()->put("is_appeal_send", true);
 
             return redirect()
                 ->route('appeal');            
         }
 
-        return view('appeal');
+        //return view('appeal');
+        return view('appeal', ['grat_message' => $grat_message]);
     }
 }

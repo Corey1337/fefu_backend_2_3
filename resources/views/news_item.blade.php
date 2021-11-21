@@ -19,6 +19,7 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        @includeWhen(session('modal_show'), 'modal.appeal_suggest')
     </head>
     <body>
         <div>
