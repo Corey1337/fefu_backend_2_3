@@ -19,10 +19,11 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        
+        @includeWhen(session('modal_show'), 'modal.appeal_suggest')
     </head>
     <body>
         <h1>News</h1>
-        
         @foreach($news_list as $news_item)
             <div>
                 <a href="{{ route('news_item', ['slug' => $news_item->slug]) }}">{{ $news_item->title }}</a>
@@ -35,4 +36,5 @@
         @endforeach
         {{ $news_list->links() }}
     </body>
+
 </html>

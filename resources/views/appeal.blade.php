@@ -36,6 +36,11 @@
             </div>
         @endif
 
+        @if ($grat_message)
+            <p>Gracia!</p>
+            <a href="{{ url()->previous() }}">Return</a>
+        @endif
+
         <form method="POST" action="{{ route('appeal') }}">
         @csrf
             <div>
