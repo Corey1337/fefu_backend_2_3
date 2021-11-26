@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $max;
  */
 
-class Suggest extends Model
+class Settings extends Model
 {
     use HasFactory;
 }

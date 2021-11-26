@@ -41,8 +41,6 @@ class AppealController extends Controller
             return redirect()
                 ->route('appeal');            
         }
-
-        //return view('appeal');
         return view('appeal', ['grat_message' => $grat_message]);
     }
 }

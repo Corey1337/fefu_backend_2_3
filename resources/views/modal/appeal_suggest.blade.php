@@ -3,7 +3,6 @@
     if(Agreed)
     {
         var url = "{{ route('appeal') }}";
-        console.log(url);
         window.location.href = url;
     }
 </script>

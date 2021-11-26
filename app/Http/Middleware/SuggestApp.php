@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use App\Models\Suggest;
+use App\Models\Settings;
 
 class SuggestApp
 {
@@ -17,9 +17,8 @@ class SuggestApp
      */
     public function handle(Request $request, Closure $next)
     {
-        $max = Suggest::first()->max;
-        $periodicity = Suggest::first()->periodicity;
-        //$request->session()->put('is_appeal_send', false);
+        $max = Settings::first()->max;
+        $periodicity = Settings::first()->periodicity;
         if(!$request->session()->get('is_appeal_send'))
         {
             if (!$request->session()->exists('show_count'))
@@ -27,7 +26,6 @@ class SuggestApp
                 $request->session()->put('show_count', 0);
                 $request->session()->put('page_changed_count', 0);
             }
-            //$request->session()->decrement('show_count');
             if($request->session()->get('show_count') < $max)
             {
                 if($request->session()->get('page_changed_count') >= $periodicity)
@@ -43,8 +41,6 @@ class SuggestApp
                 }
             }
         }
-        
-
         return $next($request);
     }
 }
