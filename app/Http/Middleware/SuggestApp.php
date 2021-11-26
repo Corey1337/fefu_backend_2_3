@@ -17,8 +17,9 @@ class SuggestApp
      */
     public function handle(Request $request, Closure $next)
     {
-        $max = Settings::first()->max;
-        $periodicity = Settings::first()->periodicity;
+        $settings = Settings::first();
+        $max = $settings->max;
+        $periodicity = $settings->periodicity;
         if(!$request->session()->get('is_appeal_send'))
         {
             if (!$request->session()->exists('show_count'))
