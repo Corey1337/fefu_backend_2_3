@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 use function response;
 
@@ -21,7 +22,6 @@ class PostController extends Controller
      */
     public function index(): JsonResponse
     {
-        //$posts = Post::with('user')->ordered()->paginate(self::PAGE_SIZE);
         return response()->json(PostResource::collection(Post::with('user', 'comments')->ordered()->paginate(self::PAGE_SIZE)));
     }
 
@@ -33,19 +33,17 @@ class PostController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required|max:100',
             'text' => 'required|max:2000',
         ]);
 
-        if(!(isset($validated['title']) || isset($validated['text'])))
-        {
-            return response()->json(['message' => 'incorrect data'], 404);
-        }
+        if($validator->fails())
+            return response()->json(['errors' => $validator->errors()->all()], 422);
 
         $post = new Post();
-        $post->title = $validated['title'];
-        $post->text = $validated['text'];
+        $post->title = $validator->validated()['title'];
+        $post->text = $validator->validated()['text'];
 
         $post->user_id = User::inRandomOrder()->first()->id;
         $post->save();
@@ -72,18 +70,22 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post): JsonResponse
     {
-        $validated = $request->validate([
-            'title' => 'required|max:100',
-            'text' => 'required|max:2000',
+        $validator = Validator::make($request->all(), [
+            'title' => 'sometimes|required|max:100',
+            'text' => 'sometimes|required|max:2000',
         ]);
 
-        $post = new Post();
-        if(isset($validated['title']))
-            $post->title = $validated['title'];
-        if(isset($validated['text']))
-            $post->text = $validated['text'];
+        if($validator->fails())
+            return response()->json(['errors' => $validator->errors()->all()], 422);
+
+        if(isset($validator->validated()['title']))
+            $post->title = $validator->validated()['title'];
+        if(isset($validator->validated()['text']))
+            $post->text = $validator->validated()['text'];
+            
         $post->save();
-        return response()->json(new PostResource($post), 201);
+
+        return response()->json(new PostResource($post), 200);
     }
 
     /**
