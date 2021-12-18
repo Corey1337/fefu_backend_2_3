@@ -19,6 +19,7 @@
                 font-family: 'Nunito', sans-serif;
             }
         </style>
+        @include('layouts.header')
         @includeWhen(session('modal_show'), 'modal.appeal_suggest')
     </head>
     <body class="antialiased">

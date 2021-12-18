@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ $news_item->title }}</title>
+        <title>{{ $user->login }}</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,16 +18,20 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+
+            .bordered {
+                border: 1px solid black;
+            }
         </style>
-        @include('layouts.header')
-        @includeWhen(session('modal_show'), 'modal.appeal_suggest')
     </head>
     <body>
+        <h2>Profile</h2>
         <div>
-            <a href="{{ route('news_list') }}">News</a>
-            <h1>{{ $news_item->title }}</h1>
-            <p>{{ $news_item->published_at }}</p>
-            <p>{{ $news_item->text }}</p>
+            <ul>
+                <li>Login: {{ $user->login}}</li>
+                <li>Name: {{ $user->name}}</li>
+                <li>Email: {{ $user->email}}</li>
+            </ul>
         </div>
     </body>
 </html>
