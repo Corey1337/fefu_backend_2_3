@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>{{ $news_item->title }}</title>
+        <title>Sign Up</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,16 +18,36 @@
             body {
                 font-family: 'Nunito', sans-serif;
             }
+            
+            .bordered {
+                border: 1px solid black;
+            }
         </style>
-        @include('layouts.header')
-        @includeWhen(session('modal_show'), 'modal.appeal_suggest')
     </head>
-    <body>
-        <div>
-            <a href="{{ route('news_list') }}">News</a>
-            <h1>{{ $news_item->title }}</h1>
-            <p>{{ $news_item->published_at }}</p>
-            <p>{{ $news_item->text }}</p>
-        </div>
+    <body class="antialiased">
+        <h2>Sign up</h2>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        {{ $error }}
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form action="{{route('sign_up')}}" method="post">
+            @csrf
+
+            <div>
+                <label>Login</label>
+                <input name="login" class="bordered" type="text" value="{{ old('login') }}">
+            </div>
+            <div>
+                <label>Password</label>
+                <input name="password" class="bordered" type="password">
+            </div>
+            <input type="submit">
+        </form>
     </body>
 </html>

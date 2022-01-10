@@ -23,6 +23,8 @@
                 border: 1px solid black;
             }
         </style>
+        @include('layouts.header')
+        
     </head>
     <body class="antialiased">
         <h2>Appeal</h2>
